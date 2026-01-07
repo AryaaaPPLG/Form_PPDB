@@ -44,4 +44,4 @@ externalPort = 5173
 [deployment]
 deploymentTarget = "autoscale"
 run = ["php", "artisan", "serve", "--host=0.0.0.0", "--port=5000"]
-build = ["bash", "-c", "npm run build"]
+build = ["bash", "-c", "npm install && npm run build && php artisan optimize"]
