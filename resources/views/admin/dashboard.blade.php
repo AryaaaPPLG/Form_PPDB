@@ -126,6 +126,26 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 10px -1px rgba(16, 185, 129, 0.4);
         }
+
+        .btn-create {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+            margin-left: 10px;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px -1px rgba(59, 130, 246, 0.4);
+        }
         
         /* Table Section */
         .table-section h3 {
@@ -270,10 +290,14 @@
         <div class="main-card">
             <div class="welcome-section">
                 <h2>Rekapitulasi Data</h2>
-                <p>Unduh data terbaru dalam format Excel untuk analisis lebih lanjut</p>
+                <p>Unduh data terbaru dalam format Excel untuk analisis lebih lanjut atau buat data baru</p>
                 <a href="{{ route('form.export') }}" class="btn-download">
                     <i class="fas fa-file-excel"></i>
                     Download Data Excel
+                </a>
+                <a href="{{ route('form.index') }}" class="btn-create">
+                    <i class="fas fa-plus"></i>
+                    Buat Data Baru
                 </a>
             </div>
             
