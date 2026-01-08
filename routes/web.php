@@ -48,8 +48,10 @@ Route::middleware(['auth'])->group(function () {
             abort(403, 'Anda bukan Admin!');
         }
 
-        // Forms data (existing)
-        $data = Form::paginate(5); // Menampilkan 5 data per halaman
+        // Forms data (existing) — independent paginator 'forms_page'
+        $data = Form::orderBy('created_at', 'desc')
+            ->paginate(5, ['*'], 'forms_page')
+            ->withQueryString(); // Menampilkan 5 data per halaman
 
         // Users data (search + filter)
         $usersQuery = \App\Models\User::query();
