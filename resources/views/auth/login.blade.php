@@ -320,7 +320,7 @@
                 <label class="form-label">Password</label>
                 <div class="input-container">
                     <i class="fas fa-key input-icon"></i>
-                    <input type="password" name="password" required id="passwordInput">
+                    <input type="password" name="password" required id="passwordInput" placeholder="Masukkan Password ">
                     <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
                 </div>
             </div>
@@ -331,7 +331,6 @@
         </form>
         
         <div class="login-footer">
-            <a href="#" class="forgot-password">Lupa password?</a>
             <p style="margin-top: 15px;">Pastikan Anda memiliki hak akses admin untuk masuk</p>
         </div>
     </div>
@@ -414,14 +413,7 @@
                     errorBox.style.transition = 'opacity 1s ease';
                 }, 5000);
             }
-            
-            // Simulasi forgot password
-            const forgotPassword = document.querySelector('.forgot-password');
-            forgotPassword.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Fitur lupa password akan mengirimkan reset link ke email terdaftar. Hubungi super admin jika diperlukan.');
-            });
-        });
+                    });
     </script>
 </body>
 </html>

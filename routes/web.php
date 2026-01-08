@@ -8,6 +8,24 @@ use Illuminate\Support\Facades\Route;
 // 1. Route Publik (User biasa)
 Route::redirect('/', '/form');
 Route::get('/form', [FormController::class, 'index'])->name('form.index');
+Route::get('/form/submit', function () {
+    return view('form.not_allowed', [
+        'message' => 'Form harus diisi terlebih dahulu sebelum melihat halaman ini.'
+    ]);
+});
+
+Route::get('/succesfully', function () {
+    // Cek apakah user memiliki session success atau pernah submit form
+    if (!session()->has('success')) {
+        return redirect('/form')->with('error', 'Anda harus mengisi form terlebih dahulu.');
+    }
+    
+    // Ambil pesan success dan hapus session agar tidak bisa kembali ke halaman ini
+    $successMessage = session('success');
+    session()->forget('success');
+    
+    return view('succesfully', ['success' => $successMessage]);
+})->name('form.success');
 Route::post('/form/submit', [FormController::class, 'submit'])->name('form.submit');
 
 // 2. Route Authentication (Gerbang Login & Logout)
@@ -29,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
         if (auth()->user()->role !== 'admin') {
             abort(403, 'Anda bukan Admin!');
         }
-        $data = Form::all();
+        $data = Form::paginate(10); // Menampilkan 10 data per halaman
         return view('admin.dashboard', compact('data'));
         })->name('admin.dashboard');
 

@@ -267,6 +267,78 @@
                 font-size: 0.9rem;
             }
         }
+        
+        /* Pagination */
+        .pagination-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .pagination-container .pagination {
+            display: flex;
+            gap: 5px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .pagination-container .pagination li {
+            margin: 0;
+        }
+        
+        .pagination-container .pagination a,
+        .pagination-container .pagination span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .pagination-container .pagination a:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+        
+        .pagination-container .pagination .active span {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .pagination-container .pagination .disabled span {
+            color: #94a3b8;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .pagination-container {
+                margin-top: 15px;
+            }
+            
+            .pagination-container .pagination a,
+            .pagination-container .pagination span {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -343,6 +415,11 @@
     @endforelse
 </tbody>
 </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    {{ $data->links() }}
                 </div>
             </div>
         </div>

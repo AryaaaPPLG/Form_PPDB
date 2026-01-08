@@ -27,7 +27,7 @@ class FormController extends Controller
 
         Form::create($validated);
 
-        return view('succesfully');
+        return redirect()->route('form.success')->with('success', 'Data berhasil dikirim!');
     }
 
     // 1. Menampilkan halaman edit

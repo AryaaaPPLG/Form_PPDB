@@ -59,6 +59,26 @@
             border: 4px solid #d1fae5;
         }
         
+        .error-container {
+            text-align: center;
+            padding: 40px 30px;
+        }
+        
+        .error-icon {
+            background-color: #fef2f2;
+            border: 4px solid #fee2e2;
+        }
+        
+        .error-icon i {
+            color: #ef4444;
+            font-size: 50px;
+        }
+        
+        .error-message {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        
         .success-icon {
             color: #10b981;
             font-size: 50px;
@@ -212,8 +232,20 @@
             100% { transform: scale(1); }
         }
         
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        
         .success-icon {
             animation: checkmark 0.5s cubic-bezier(0.65, 0, 0.45, 1) 0.3s both;
+        }
+        
+        .error-icon i {
+            animation: shake 0.5s ease-in-out 0.3s both;
         }
         
         /* Responsif */
@@ -243,49 +275,73 @@
 </head>
 <body>
     <div class="success-container">
-        <div class="icon-container">
-            <i class="fas fa-check-circle success-icon"></i>
-        </div>
-        
-        <h1>Data Berhasil Dikirim!</h1>
-        
-        <div class="message">
-            Terima kasih telah mengirimkan data Anda. <span class="highlight">Tim admin kami telah menerima informasi yang Anda kirimkan</span> dan akan segera memprosesnya.
-        </div>
-        
-        <div class="status-indicator">
-            <i class="fas fa-clock status-icon"></i>
-            <span>Menunggu Verifikasi Admin</span>
-        </div>
-        
-        <div class="info-box">
-            <div class="info-title">
-                <i class="fas fa-info-circle"></i>
-                Proses Selanjutnya
+        @if(session('error'))
+            <div class="error-container">
+                <div class="icon-container error-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <h1>Oops!</h1>
+                <div class="message error-message">
+                    {{ session('error') }}
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="window.location.href='{{ route('form.index') }}'">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Form
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/'">
+                        <i class="fas fa-home"></i> Beranda
+                    </button>
+                </div>
             </div>
-            <div class="info-content">
-                <p>Tim admin kami akan melakukan verifikasi dan peninjauan terhadap data yang telah Anda kirim. Berikut adalah tahapan yang akan dilakukan:</p>
-                <ul>
-                    <li>Verifikasi kelengkapan data</li>
-                    <li>Validasi informasi yang diberikan</li>
-                    <li>Proses internal sesuai kebijakan</li>
-                </ul>
-                <p>Anda akan mendapatkan notifikasi melalui email atau kontak yang telah Anda berikan setelah proses verifikasi selesai.</p>
+        @else
+            <div class="icon-container">
+                <i class="fas fa-check-circle success-icon"></i>
             </div>
-        </div>
-        
-        <div class="action-buttons">
-            <button class="btn btn-primary" onclick="window.location.href='/'">
-                <i class="fas fa-home"></i> Kembali ke Beranda
-            </button>
-            <button class="btn btn-secondary" onclick="window.location.href='/contact'">
-                <i class="fas fa-headset"></i> Hubungi Admin
-            </button>
-        </div>
-        
-        <div class="footer-note">
-            Proses verifikasi biasanya memerlukan waktu 1-3 hari kerja. Terima kasih atas kesabaran Anda.
-        </div>
+            
+            <h1>Data Berhasil Dikirim!</h1>
+            
+            <div class="message">
+                @if(isset($success))
+                    {{ $success }}
+                @else
+                    Terima kasih telah mengirimkan data Anda. <span class="highlight">Tim admin kami telah menerima informasi yang Anda kirimkan</span> dan akan segera memprosesnya.
+                @endif
+            </div>
+            
+            <div class="status-indicator">
+                <i class="fas fa-clock status-icon"></i>
+                <span>Menunggu Verifikasi Admin</span>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-title">
+                    <i class="fas fa-info-circle"></i>
+                    Proses Selanjutnya
+                </div>
+                <div class="info-content">
+                    <p>Tim admin kami akan melakukan verifikasi dan peninjauan terhadap data yang telah Anda kirim. Berikut adalah tahapan yang akan dilakukan:</p>
+                    <ul>
+                        <li>Verifikasi kelengkapan data</li>
+                        <li>Validasi informasi yang diberikan</li>
+                        <li>Proses internal sesuai kebijakan</li>
+                    </ul>
+                    <p>Anda akan mendapatkan notifikasi melalui email atau kontak yang telah Anda berikan setelah proses verifikasi selesai.</p>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="window.location.href='{{ route('form.index') }}'">
+                    <i class="fas fa-plus"></i> Isi Form Lagi
+                </button>
+                <button class="btn btn-secondary" onclick="window.location.href='/'">
+                    <i class="fas fa-home"></i> Beranda
+                </button>
+            </div>
+            
+            <div class="footer-note">
+                Proses verifikasi biasanya memerlukan waktu 1-3 hari kerja. Terima kasih atas kesabaran Anda.
+            </div>
+        @endif
     </div>
 
     <script>
