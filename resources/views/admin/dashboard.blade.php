@@ -279,7 +279,7 @@
         
         .pagination-container .pagination {
             display: flex;
-            gap: 5px;
+            gap: 8px;
             list-style: none;
             padding: 0;
             margin: 0;
@@ -296,21 +296,30 @@
             justify-content: center;
             width: 36px;
             height: 36px;
+            line-height: 0; /* ensure SVGs are perfectly centered */
             border: 1px solid var(--border);
             background: var(--card);
             color: var(--text);
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.9rem;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: background .15s ease, transform .12s ease, color .15s ease, border-color .15s ease;
+        }
+
+        /* Resize and block SVG icons inside pagination items */
+        .pagination-container .pagination a svg,
+        .pagination-container .pagination span svg {
+            width: 16px;
+            height: 16px;
+            display: block;
         }
         
         .pagination-container .pagination a:hover {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
         
         .pagination-container .pagination .active span {
@@ -320,10 +329,13 @@
             font-weight: 600;
         }
         
-        .pagination-container .pagination .disabled span {
+        .pagination-container .pagination .disabled span,
+        .pagination-container .pagination .disabled a {
             color: #94a3b8;
             cursor: not-allowed;
             opacity: 0.5;
+            transform: none;
+            background: var(--card);
         }
         
         /* Responsive */
@@ -337,6 +349,12 @@
                 width: 32px;
                 height: 32px;
                 font-size: 0.8rem;
+            }
+
+            .pagination-container .pagination a svg,
+            .pagination-container .pagination span svg {
+                width: 14px;
+                height: 14px;
             }
         }
     </style>
