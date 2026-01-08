@@ -314,6 +314,30 @@
             height: 16px;
             display: block;
         }
+
+        /* Font Awesome chevrons inside custom pagination */
+        .custom-pagination .pagination a i,
+        .custom-pagination .pagination span i {
+            font-size: 14px;
+            line-height: 0;
+            display: inline-block;
+        }
+
+        .custom-pagination .pagination li a,
+        .custom-pagination .pagination li span {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .custom-pagination .pagination li a i { color: var(--text); }
+        .custom-pagination .pagination li a:hover i { color: #fff; }
+        .custom-pagination .pagination li.disabled span i { color: #94a3b8; opacity: .6; }
+        .custom-pagination .pagination li.active span { background: var(--primary); color: #fff; border-color: var(--primary); font-weight:600; }
+        .custom-pagination .pagination li.active span i { color: #fff; }
         
         .pagination-container .pagination a:hover {
             background: var(--primary);
@@ -496,9 +520,9 @@
 
                 <div class="pagination-container">
                     @if(request('view') == 'users')
-                        {{ $users->links() }}
+                        {{ $users->links('vendor.pagination.custom') }}
                     @else
-                        {{ $data->links() }}
+                        {{ $data->links('vendor.pagination.custom') }}
                     @endif
                 </div>
             </div>
