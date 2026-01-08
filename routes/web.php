@@ -42,14 +42,44 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/form/destroy/{id}', [FormController::class, 'destroy']);
 
     // Dashboard Admin
-    Route::get('/admin/dashboard', function () {
+    Route::get('/admin/dashboard', function (\Illuminate\Http\Request $request) {
         // Cek lagi biar aman, cuma admin yang boleh masuk sini
         if (auth()->user()->role !== 'admin') {
             abort(403, 'Anda bukan Admin!');
         }
+
+        // Forms data (existing)
         $data = Form::paginate(10); // Menampilkan 10 data per halaman
-        return view('admin.dashboard', compact('data'));
+
+        // Users data (search + filter + short option)
+        $usersQuery = \App\Models\User::query();
+
+        // Search by name or email via 'user_q'
+        if ($request->filled('user_q')) {
+            $search = $request->user_q;
+            $usersQuery->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by role via 'user_role'
+        if ($request->filled('user_role')) {
+            $usersQuery->where('role', $request->user_role);
+        }
+
+        // Short view reduces per-page count when 'user_short' is present
+        $perPage = $request->has('user_short') ? 5 : 10;
+
+        // Use a separate paginator parameter to avoid conflict with other paginators
+        $users = $usersQuery->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'users_page')
+            ->withQueryString();
+
+        return view('admin.dashboard', compact('data', 'users'));
         })->name('admin.dashboard');
+
+
 
     // Fitur Export (Hanya admin)
     Route::get('/form/export', function () {

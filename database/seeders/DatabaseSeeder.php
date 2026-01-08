@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
     ]);
 
     // 2. Buat user dummy biasa (opsional)
-    User::factory(5)->create();
+    // User::factory(5)->create(); // Disabled: removed dummy users
 }
 }
