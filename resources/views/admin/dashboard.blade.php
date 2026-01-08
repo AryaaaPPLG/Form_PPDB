@@ -371,55 +371,117 @@
                     <i class="fas fa-plus"></i>
                     Buat Data Baru
                 </a>
+                <a href="{{ route('admin.dashboard') }}?view=users" class="btn-create" style="background: linear-gradient(135deg, #6b7280 0%, #374151 100%); box-shadow: none; margin-left: 10px;">
+                    <i class="fas fa-users"></i>
+                    Data Pengguna
+                </a>
             </div>
             
-            <!-- Table Section -->
+            <!-- Table Section (supports both Forms and Users views using same table markup) -->
             <div class="table-section">
-                <h3><i class="fas fa-table"></i> Data Terbaru</h3>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;">
+                    <h3 style="margin:0; display:flex; align-items:center; gap:10px;">
+                        <i class="fas fa-table"></i>
+                        @if(request('view') == 'users') Data Pengguna @else Data Terbaru @endif
+                    </h3>
+
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <a href="{{ route('admin.dashboard') }}" class="btn-create" style="background: {{ request('view') == 'users' ? 'transparent' : '' }}; color: {{ request('view') == 'users' ? 'var(--text)' : 'white' }}; box-shadow: none; padding:8px 12px; font-size:0.92rem;">Data Terbaru</a>
+                        <a href="{{ route('admin.dashboard') }}?view=users" class="btn-create" style="background: {{ request('view') == 'users' ? 'linear-gradient(135deg, #6b7280 0%, #374151 100%)' : '' }}; box-shadow: none; padding:8px 12px; font-size:0.92rem;">Data Pengguna</a>
+                    </div>
+                </div>
+
+                <!-- Search & filters (only for users view) -->
+                @if(request('view') == 'users')
+                <form method="GET" action="{{ route('admin.dashboard') }}" style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+                    <input type="hidden" name="view" value="users">
+                    <input type="text" name="user_q" placeholder="Cari nama atau email..." value="{{ request('user_q') }}" style="padding:8px 10px; border:1px solid var(--border); border-radius:6px; width:260px;">
+
+                    <select name="user_role" style="padding:8px 10px; border:1px solid var(--border); border-radius:6px;">
+                        <option value="">Semua role</option>
+                        <option value="admin" {{ request('user_role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="user" {{ request('user_role') == 'user' ? 'selected' : '' }}>User</option>
+                    </select>
+
+                    <button type="submit" style="background:var(--primary); color:white; padding:8px 12px; border-radius:6px; border:none; font-weight:600;">Cari</button>
+                    <a href="{{ route('admin.dashboard') }}" style="padding:8px 12px; border-radius:6px; border:1px solid var(--border); text-decoration:none; color:var(--text);">Reset</a>
+
+                    <div style="margin-left:auto; color:#64748b; font-size:0.9rem;">Total: <strong>{{ $users->total() ?? 0 }}</strong></div>
+                </form>
+                @endif
+
                 <div class="table-container">
                     <table class="data-table">
-    <thead>
-        <tr>
-            <th>Nama</th>
-            <th>Organisasi</th>
-            <th>Daerah</th>
-            <th>Nomor WA</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody id="data-table-body">
-    @forelse ($data as $d)
-    <tr>
-        <td>{{ $d->name }}</td>
-        <td>{{ $d->organization }}</td>
-        <td>{{ $d->daerah }}</td>
-        <td>{{ $d->no_telp }}</td>
-        <td class="aksi">
-            <a href="/form/edit/{{ $d->id }}" style="color: var(--primary); text-decoration: none; font-weight: 600;">
-                <i class="fas fa-edit"></i> Edit
-            </a>
+                        <thead>
+                        @if(request('view') == 'users')
+                            <tr>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Tanggal Dibuat</th>
+                            </tr>
+                        @else
+                            <tr>
+                                <th>Nama</th>
+                                <th>Organisasi</th>
+                                <th>Daerah</th>
+                                <th>Nomor WA</th>
+                                <th>Aksi</th>
+                            </tr>
+                        @endif
+                        </thead>
 
-            <form action="/form/destroy/{{ $d->id }}" method="POST" onsubmit="return confirm('Yakin hapus data?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" style="background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 600; font-family: inherit; display: flex; align-items: center; gap: 4px;">
-                    <i class="fas fa-trash"></i> Hapus
-                </button>
-            </form>
-        </td>
-    </tr>
-    @empty
-    <tr>
-        <td colspan="5" style="text-align: center; padding: 20px;">Data tidak ada</td>
-    </tr>
-    @endforelse
-</tbody>
-</table>
+                        <tbody id="data-table-body">
+                        @if(request('view') == 'users')
+                            @forelse ($users ?? collect() as $user)
+                            <tr>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->role ?? 'user' }}</td>
+                                <td>{{ $user->created_at ? $user->created_at->format('d M Y') : '-' }}</td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" style="text-align:center; padding:20px;">Tidak ada pengguna.</td>
+                            </tr>
+                            @endforelse
+                        @else
+                            @forelse ($data as $d)
+                            <tr>
+                                <td>{{ $d->name }}</td>
+                                <td>{{ $d->organization }}</td>
+                                <td>{{ $d->daerah }}</td>
+                                <td>{{ $d->no_telp }}</td>
+                                <td class="aksi">
+                                    <a href="/form/edit/{{ $d->id }}" style="color: var(--primary); text-decoration: none; font-weight: 600;">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+
+                                    <form action="/form/destroy/{{ $d->id }}" method="POST" onsubmit="return confirm('Yakin hapus data?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 600; font-family: inherit; display: flex; align-items: center; gap: 4px;">
+                                            <i class="fas fa-trash"></i> Hapus
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 20px;">Data tidak ada</td>
+                            </tr>
+                            @endforelse
+                        @endif
+                        </tbody>
+                    </table>
                 </div>
-                
-                <!-- Pagination -->
+
                 <div class="pagination-container">
-                    {{ $data->links() }}
+                    @if(request('view') == 'users')
+                        {{ $users->links() }}
+                    @else
+                        {{ $data->links() }}
+                    @endif
                 </div>
             </div>
         </div>

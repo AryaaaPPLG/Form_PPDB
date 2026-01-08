@@ -49,9 +49,9 @@ Route::middleware(['auth'])->group(function () {
         }
 
         // Forms data (existing)
-        $data = Form::paginate(10); // Menampilkan 10 data per halaman
+        $data = Form::paginate(5); // Menampilkan 5 data per halaman
 
-        // Users data (search + filter + short option)
+        // Users data (search + filter)
         $usersQuery = \App\Models\User::query();
 
         // Search by name or email via 'user_q'
@@ -68,8 +68,8 @@ Route::middleware(['auth'])->group(function () {
             $usersQuery->where('role', $request->user_role);
         }
 
-        // Short view reduces per-page count when 'user_short' is present
-        $perPage = $request->has('user_short') ? 5 : 10;
+        // Default per-page for users
+        $perPage = 5;
 
         // Use a separate paginator parameter to avoid conflict with other paginators
         $users = $usersQuery->orderBy('created_at', 'desc')
