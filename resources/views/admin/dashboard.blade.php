@@ -413,10 +413,6 @@
                     <i class="fas fa-plus"></i>
                     Buat Data Baru
                 </a>
-                <a href="{{ route('admin.dashboard') }}?view=users" class="btn-create" style="background: linear-gradient(135deg, #6b7280 0%, #374151 100%); box-shadow: none; margin-left: 10px;">
-                    <i class="fas fa-users"></i>
-                    Data Pengguna
-                </a>
             </div>
             
             <!-- Table Section (supports both Forms and Users views using same table markup) -->
