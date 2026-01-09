@@ -14,19 +14,19 @@ Route::get('/form/submit', function () {
     ]);
 });
 
-Route::get('/succesfully', function () {
-    // Cek apakah user memiliki session success atau pernah submit form
-    if (!session()->has('success')) {
-        return redirect('/form')->with('error', 'Anda harus mengisi form terlebih dahulu.');
-    }
-    
-    // Ambil pesan success dan hapus session agar tidak bisa kembali ke halaman ini
-    $successMessage = session('success');
-    session()->forget('success');
-    
-    return view('succesfully', ['success' => $successMessage]);
-})->name('form.success');
-Route::post('/form/submit', [FormController::class, 'submit'])->name('form.submit');
+    Route::get('/succesfully', function () {
+        // Cek apakah user memiliki session success atau pernah submit form
+        if (!session()->has('success')) {
+            return redirect('/form')->with('error', 'Anda harus mengisi form terlebih dahulu.');
+        }
+        
+        // Ambil pesan success dan hapus session agar tidak bisa kembali ke halaman ini
+        $successMessage = session('success');
+        session()->forget('success');
+        
+        return view('succesfully', ['success' => $successMessage]);
+    })->name('form.success');
+    Route::post('/form/submit', [FormController::class, 'submit'])->name('form.submit');
 
 // 2. Route Authentication (Gerbang Login & Logout)
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');

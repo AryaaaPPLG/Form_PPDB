@@ -124,41 +124,171 @@
         }
         
         .info-box {
-            background-color: #f8fafc;
-            border-radius: 12px;
-            padding: 22px;
-            margin-top: 25px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
+            border-radius: 18px;
+            padding: 32px;
+            margin-top: 28px;
             text-align: left;
-            border-left: 4px solid #10b981;
+            border: 1px solid #d1fae5;
+            border-left: 5px solid #10b981;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.1);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #10b981, #34d399, transparent);
+        }
+        
+        .info-box:hover {
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.15);
+            transform: translateY(-4px);
+            border-color: #a7f3d0;
         }
         
         .info-title {
             color: #047857;
-            font-weight: 600;
-            font-size: 17px;
-            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 19px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
+            letter-spacing: 0.4px;
         }
         
         .info-title i {
-            margin-right: 10px;
-            font-size: 18px;
+            margin-right: 12px;
+            font-size: 22px;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .info-box:hover .info-title i {
+            background: rgba(16, 185, 129, 0.2);
+            transform: scale(1.1);
         }
         
         .info-content {
             color: #4b5563;
             font-size: 15px;
-            line-height: 1.5;
+            line-height: 1.8;
+        }
+        
+        .info-content p {
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+        
+        .info-content p:first-of-type {
+            color: #047857;
+            font-weight: 600;
         }
         
         .info-content ul {
-            padding-left: 20px;
-            margin-top: 8px;
+            padding-left: 28px;
+            margin: 14px 0;
+            background: rgba(16, 185, 129, 0.03);
+            padding: 14px 14px 14px 28px;
+            border-radius: 10px;
+            border-left: 3px solid #d1fae5;
         }
         
         .info-content li {
-            margin-bottom: 6px;
+            margin-bottom: 10px;
+            position: relative;
+            color: #374151;
+        }
+        
+        .info-content li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-content li:before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            margin-left: -18px;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        /* Powered By logos */
+        .powered-by {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 2px solid #d1fae5;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.03) 0%, transparent 100%);
+            padding: 20px 0;
+            border-radius: 12px;
+        }
+
+        .powered-text {
+            color: #047857;
+            font-weight: 700;
+            font-size: 16px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            letter-spacing: 0.4px;
+        }
+
+        .powered-by .logos {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+            flex-grow: 1;
+        }
+
+        .powered-by .logos img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06));
+        }
+
+        .powered-by .logos img:hover {
+            transform: scale(1.1) translateY(-4px);
+            filter: drop-shadow(0 6px 12px rgba(16, 185, 129, 0.2));
+        }
+
+        @media (max-width: 576px) {
+            .powered-by {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                padding: 16px 0;
+            }
+
+            .powered-by .logos {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                width: 100%;
+                gap: 12px;
+            }
+
+            .powered-by .logos img {
+                height: 75px;
+            }
         }
         
         .action-buttons {
@@ -314,18 +444,11 @@
             </div>
             
             <div class="info-box">
-                <div class="info-title">
-                    <i class="fas fa-info-circle"></i>
-                    Proses Selanjutnya
-                </div>
-                <div class="info-content">
-                    <p>Tim admin kami akan melakukan verifikasi dan peninjauan terhadap data yang telah Anda kirim. Berikut adalah tahapan yang akan dilakukan:</p>
-                    <ul>
-                        <li>Verifikasi kelengkapan data</li>
-                        <li>Validasi informasi yang diberikan</li>
-                        <li>Proses internal sesuai kebijakan</li>
-                    </ul>
-                    <p>Anda akan mendapatkan notifikasi melalui email atau kontak yang telah Anda berikan setelah proses verifikasi selesai.</p>
+                <div class="powered-by">
+                    <div class="powered-text">&copy;Powered By PPLG</div>
+                    <div class="logos">
+                        <img src="{{ asset('assets/logo2.png') }}" alt="PPLG Logo 2" style="height: 90px; width: auto;">
+                    </div>
                 </div>
             </div>
             
